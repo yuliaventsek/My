@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Log in</title>
+    <link rel="stylesheet" href="login.css">
+  </head>
+
+  <body>
+    <div class="container">
+        <form action='/login' method='post' class="login">
+            <p class="login-text">Log in</p>
+            <div class="input-group">
+                <input type="text" placeholder="Nickname" name="uname" required />
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Password" name="pw" required>
+                <a class="create-form" href="/register">Create an account</a>
+            </div>
+            <input class="button color" formaction="/login" type="submit" value="Log in" />
+        </form>
+    </div>
+</body>
+</html>

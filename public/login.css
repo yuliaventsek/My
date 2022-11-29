@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: 300% 300%;
+    background-image: linear-gradient(-45deg, #ffcccc 5%, #ccccff 25%, #a29bfe 61%, #ffccff 90%);
+    -webkit-animation: AnimateBG 20s ease infinite;
+    animation: AnimateBG 20s ease infinite;
+}
+
+@-webkit-keyframes AnimateBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes AnimateBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.container {
+    width: 400px;
+    min-height: 290px;
+    background: #FFF;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    padding: 5px 25px;
+}
+
+.container .login-text {
+    color: #111;
+    font-weight: 500;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 10px;
+    display: block;
+    text-transform: capitalize;
+}
+
+.container .login .input-group {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 20px;
+}
+
+.container .login .input-group input {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #e7e7e7;
+    padding: 15px 20px;
+    font-size: 1rem;
+    border-radius: 30px;
+    background: transparent;
+    outline: none;
+    transition: .3s;
+}
+
+.container .login .input-group input:focus,
+.container .login .input-group input:valid {
+    border-color: #a29bfe;
+}
+
+.button {
+    width: 230px;
+    height: 55px;
+    font-size: 24px;
+    font-weight: 500;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 60px;
+    margin-top: 15px;
+    text-align: center;
+    border: none;
+    background-size: 300% 100%;
+    border-radius: 50px;
+    -o-transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+.button:hover {
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.button.color {
+    background-image: linear-gradient(to right,
+            #6253e1,
+            #852d91,
+            #a29bfe,
+            #ffcccc);
+    box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
+}
+
+.create-form {
+    color: #111;
+    font-size: 1rem;
+    margin-left: 10px;
+    margin-top: 10px;
+}
