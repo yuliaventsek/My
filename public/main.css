@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    font-size: 1rem;
+    margin: 0 auto;
+    font-weight: 400;
+}
+
+.header {
+    height: 100px;
+    background-size: 300% 300%;
+    background-image: linear-gradient(-45deg, #ffcccc 5%, #ccccff 25%, #a29bfe 61%, #ffccff 90%);
+    -webkit-animation: AnimateBG 20s ease infinite;
+    animation: AnimateBG 20s ease infinite;
+}
+
+@-webkit-keyframes AnimateBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes AnimateBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.container {
+    width: 1440px;
+    margin: 0 auto;
+    padding-left: 102px;
+    padding-right: 102px;
+}
+
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navigation {
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navigation__chapter {
+    text-decoration: none;
+    color: #000;
+    font-size: 20px;
+}
+
+.navigation__chapter:hover {
+    font-weight: 700;
+}
+
+.coconut {
+    width: 70px;
+    margin-top: 10px;
+}
+
+.welcome {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+.main {
+    display: flex;
+    height: 1000px;
+    flex-direction: row;
+}
+
+.sorting {
+    width: 230px;
+    display: flex;
+    flex-direction: column;
+}
+
+.select {
+    margin-bottom: 30px;
+    height: 40px;
+    border: 2px solid #e7e7e7;
+    padding-left: 10px;
+    font-size: 1rem;
+    transition: .3s;
+}
+
+.select:focus{
+    border-color: #a29bfe;
+}
+
+.table {
+    width: 1000px;
+    position: absolute;
+    top: 210px;
+    right: 120px;
+    /* table-layout: fixed; */
+}
+
+th{
+    border: 2px solid #a29bfe;
+    height: 50px;
+    
+}
+
+td{
+    border: 2px solid #e7e7e7;
+    height: 35px;
+    padding-left: 10px;
+}
+
+.heart{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.full {
+    overflow: hidden;
+}

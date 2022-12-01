@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Registration</title>
-    
-  </head>
-    <body class="background">
-      <section id='login'>
-        <form action='register' method='post' style="border-color:#66bfbf">
-        <div class="container logindiv">
-            <h1 class="logintitle">Register</h1>
-            <div class="inp">
-                <label>Username : </label>
-                <input type="text" placeholder="Enter Username" name="uname" required>          
-            </div>
-            <div  class="inp">
-                <label>Password : </label>
-                <input type="password" placeholder="Enter Password" name="pw" required>
-            </div>
-            <p class="textp">
-                Already a member ?<a href="/login" class="to_register"> Go and log in </a>
-               </p>
-           <div class="loginbutton">
-            <button class="singlebutton btn btn-primary " type="submit">Register</button>
-           </div>
-        </div>
-    </form>
-      </section>
 
-  </body>
+<head>
+  <meta charset="utf-8">
+  <title>Sign up</title>
+  <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <form method="POST" class="signUp">
+      <p class="signUp-text">Sign up</p>
+      <div class="input-group">
+        <input type="text" placeholder="Name" name="name" required />
+      </div>
+      <div class="input-group">
+        <input type="text" placeholder="Surname" name="surname" required />
+      </div>
+      <div class="input-group">
+        <input type="text" placeholder="Username" name="uname" required />
+      </div>
+      <div class="input-group">
+        <input type="email" placeholder="Email" name="email" required />
+      </div>
+      <div class="input-group">
+        <input type="date" placeholder="Date of birth" name="birthday" required />
+      </div>
+      <div class="input-group">
+        <input type="text" placeholder="Country" name="country" required />
+      </div>
+      <div class="input-group">
+        <input type="password" placeholder="Password" name="pw" required>
+        <a class="login-form" href="/login">Log in</a>
+      </div>
+      <input class="button color" type="submit" value="Sign up" />
+    </form>
+  </div>
+</body>
+
 </html>
