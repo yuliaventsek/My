@@ -97,9 +97,9 @@ passport.serializeUser((user, done) => {
 
 
 
-passport.deserializeUser(function (userId, done) {
-    console.log('deserializeUser' + userId);
-    connection.query('SELECT * FROM users WHERE user_id = ?', [userId], function (error, results) {
+passport.deserializeUser(function (user_id, done) {
+    console.log('deserializeUser' + user_id);
+    connection.query('SELECT * FROM users WHERE user_id = ?', [user_id], function (error, results) {
         done(null, results[0]);
     });
 });
@@ -180,10 +180,6 @@ app.get('/logout', (req, res, next) => {
     })
 });
 
-app.get('/subscription', (req, res, next) => {
-    res.render('subscription');
-});
-
 app.get('/login-failure', (req, res, next) => {
     res.send('You entered the wrong password.');
 });
@@ -213,7 +209,7 @@ app.post('/register', userExists, (req, res, next) => {
             console.log("Successfully Entered");
         }
     });
-    res.redirect('/subscription');
+    res.redirect('/login');
 });
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/main' }));
@@ -254,6 +250,8 @@ app.get('/profile', function (req, res) {
     });
 });
 
+
+
 // app.post('/delete/:id', function (req, res, next) {
 //     var sql = 'DELETE FROM users WHERE user_id = ?';
 //     var id = req.params.id;
@@ -267,9 +265,55 @@ app.get('/profile', function (req, res) {
 //     res.redirect('/logout');
 //   });
 
+app.get('/add', (req, res, next) => {
+    console.log(req.user);
+    res.render('add')
+});
+
+app.post('/add', (req, res, next) => {
+    const songname = req.body.songname;
+    const musician = req.body.musician;
+    const year = req.body.year;
+    const genre = req.body.genre;
+
+
+    connection.query('Insert into musicinfo(songname, musician, year, genre) values(?,?,?,?) ', [songname, musician, year, genre], function (error, results, fields) {
+        if (error) {
+            console.log("Error");
+        }
+        else {
+            console.log("Successfully Added");
+        }
+    });
+    res.redirect('/main');
+});
 
 
 
+app.get('/subscription', function (req, res) {
+    console.log('get works')
+    connection.query('SELECT * FROM subscriptions', function (err, result) {
+        if (err) throw err;
+        console.log(result)
+        console.log('get works')
+        res.render('subscription', { information: result })
+    });
+});
+
+app.get('/payment/:type', function (req, res, next) {
+    var sql = 'SELECT * FROM subscriptions WHERE type = ?';
+    var type = req.params.type;
+    console.log(type)
+    connection.query(sql, [type], function (err, result) {
+        if (err) {
+            throw err;
+        }
+        console.log(result)
+        res.render('payment', {
+            data: result
+        });
+    });
+})
 
 
 

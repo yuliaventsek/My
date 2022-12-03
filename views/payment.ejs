@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Payment</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="payment.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="payment-text">Payment</p>
+        <% data.forEach(info=> { %>
+            <div class="subscription">
+                <h2>
+                    <%= info.type %> month
+                </h2>
+                <p>$ <%= info.cost %>
+                </p>
+            </div>
+            <%})%>
+                <form action='/' method='post' class="payment">
+                    <div class="input-group">
+                        <input type="email" placeholder="Email" name="email" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" placeholder="Number card" name="card" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" placeholder="CVV" name="cvv" required>
+                    </div>
+                    <input class="button color" formaction="/main" type="submit" value="Pay" />
+                </form>
+    </div>
+</body>
+
+</html>

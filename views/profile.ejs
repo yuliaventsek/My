@@ -31,9 +31,8 @@
             <h1 id="h1">Profile</h1>
             <div class="information">
                 <% data.forEach(entry=> { %>
-                <table class="table">
-                   
-                    
+                    <table class="table">
+
                         <tr>
                             <th>Name</th>
                             <td>
@@ -60,7 +59,7 @@
                         </tr>
                         <tr>
                             <th>Birthday</th>
-                            <td>
+                            <td class="date">
                                 <%= entry.birthday %>
                             </td>
                         </tr>
@@ -70,16 +69,24 @@
                                 <%= entry.country %>
                             </td>
                         </tr>
-                        
-                </table>
-                <form action="/logout" method="GET">
-                    <button class="button color">Log out</button>
-                </form>
-                <%})%>
-                
+
+                    </table>
+                    <form action="/logout" method="GET">
+                        <button class="button color">Log out</button>
+                    </form>
+                    <%})%>
+
             </div>
         </div>
     </main>
+
+    <script>
+        const newDates = document.getElementsByClassName('date')
+        for (let i = 0; i < newDates.length; i++) {
+            console.log(new Date(newDates[i].innerHTML))
+            newDates[i].innerHTML = new Date((newDates[i].innerHTML)).toLocaleDateString()
+        }
+    </script>
 </body>
 
 </html>

@@ -30,27 +30,15 @@
         <div class="container">
             <h1>Choose your subscription</h1>
             <div class="catalog">
+                <% information.forEach(info=> { %>
                 <div class="subscription">
-                    <h2>1 month</h2>
-                    <p>$4.99</p>
+                    <h2><%= info.type %> month</h2>
+                    <p>$ <%= info.cost %></p>
                     <div class="button color">
-                        <a href="/1mounth">Buy</a>
+                        <a href="/payment/<%= info.type %>">Buy</a>
                     </div>
                 </div>
-                <div class="subscription">
-                    <h2>3 month</h2>
-                    <p>$12.99</p>
-                    <div class="button color">
-                        <a href="/3mounth">Buy</a>
-                    </div>
-                </div>
-                <div class="subscription">
-                    <h2>6 month</h2>
-                    <p>$25.99</p>
-                    <div class="button color">
-                        <a  href="/6mounth">Buy</a>
-                    </div>
-                </div>
+                <%})%>
             </div>
         </div>
     </main>
