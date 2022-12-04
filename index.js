@@ -315,6 +315,27 @@ app.get('/payment/:type', function (req, res, next) {
     });
 })
 
+app.post('/payment/:type', (req, res, next) => {
+    
+    const email = req.body.email;
+    const card = req.body.card;
+    const cvv = req.body.cvv;
+
+    connection.query('Insert into payment (email, card, cvv) values(?,?,?) ', [email, card, cvv], function (error, results, fields) {
+        if (error) {
+            console.log("Error");
+        }
+        else {
+            console.log("Successfully");
+        }
+    });
+    res.redirect('/main');
+});
+
+
+
+
+
 
 
 app.listen(3306, function () {

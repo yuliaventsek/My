@@ -113,6 +113,7 @@ h2{
 }
 
 a{
+    width: 200px;
     text-decoration: none;
     color: #fff;
 }
