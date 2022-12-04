@@ -316,7 +316,8 @@ app.get('/payment/:type', function (req, res, next) {
 })
 
 app.post('/payment/:type', (req, res, next) => {
-    
+    var sql = 'SELECT * FROM subscriptions WHERE type = ?';
+    var type = req.params.type;
     const email = req.body.email;
     const card = req.body.card;
     const cvv = req.body.cvv;
