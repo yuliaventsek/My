@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Users</title>
+    <link rel="stylesheet" href="users.css">
+  </head>
+
+  <body>
+
+    <header class="header">
+        <div class="container">
+            <div class="banner">
+                <div class="logo">
+                    <a href="#h1"><img class="coconut" src="/images/coconut.png" alt="logo"></a>
+                </div>
+                <nav class="navigation">
+                    <% if(isAdmin() == 1){%> 
+                        <a class="navigation__chapter" href="/users">Users</a>
+                        <%} %>
+                    <a class="navigation__chapter" href="/my">My music</a>
+                    <a class="navigation__chapter" href="/subscription">Subscription</a>
+                    <a class="navigation__chapter" href="/add">Add song</a>
+                    <a class="navigation__chapter" href="/profile">Profile</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <h1>Users</h1>
+    <p><a href="/register">Add user</a></p>
+    <table>
+        <tr><th>Name</th><th>Surname</th><th>Username</th><th>Email</th><th>Birthday</th><th>Country</th></tr>
+        {{#each users}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td>{{this.surname}}</td>
+                <td>{{this.username}}</td>
+                <td>{{this.email}}</td>
+                <td class="date">{{this.birthday}}</td>
+                <td>{{this.country}}</td>
+                <td>
+                    <a href="/edit/{{this.user_id}}">Edit</a>|
+                    <form action="delete/{{this.user_id}}" method="POST" style="display:inline;">
+                        <input type="submit" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+        {{/each}}
+    </table>
+
+     <script>
+        const newDates = document.getElementsByClassName('date')
+        for (let i = 0; i < newDates.length; i++) {
+            console.log(new Date(newDates[i].innerHTML))
+            newDates[i].innerHTML = new Date((newDates[i].innerHTML)).toLocaleDateString()
+        }
+    </script>
+</body>
+</html>

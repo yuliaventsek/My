@@ -7,6 +7,7 @@ const mysql = require('mysql');
 const crypto = require('crypto');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
+const urlencodedParser = express.urlencoded({extended: false});
 
 app.use(express.static('public'));
 
@@ -34,7 +35,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(express.static('public'));
-app.set("view engine", "ejs");
+app.set("view engine", "ejs", "hbs");
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -53,8 +54,6 @@ connection.connect(function (err) {
 });
 
 
-
-
 const customFields = {
     usernameField: 'uname',
     passwordField: 'pw',
@@ -71,7 +70,7 @@ const verifyCallback = (username, password, done) => {
             return done(null, false);
         }
         const isValid = validPassword(password, results[0].hash, results[0].salt);
-        user = { user_id: results[0].user_id, username: results[0].username, hash: results[0].hash, salt: results[0].salt };
+        user = { user_id: results[0].user_id, username: results[0].username, music_id: results[0].music_id, hash: results[0].hash, salt: results[0].salt };
         if (isValid) {
             return done(null, user);
         }
@@ -89,13 +88,6 @@ passport.serializeUser((user, done) => {
     console.log("inside serialize");
     done(null, user.user_id)
 });
-
-
-
-
-
-
-
 
 passport.deserializeUser(function (user_id, done) {
     console.log('deserializeUser' + user_id);
@@ -117,11 +109,6 @@ function genPassword(password) {
     return { salt: salt, hash: genhash };
 }
 
-
-
-
-
-
 function isAuth(req, res, next) {
     if (req.isAuthenticated()) {
         next();
@@ -131,7 +118,6 @@ function isAuth(req, res, next) {
     }
 }
 
-
 function isAdmin(req, res, next) {
     if (req.isAuthenticated() && req.user.isAdmin == 1) {
         next()
@@ -140,10 +126,6 @@ function isAdmin(req, res, next) {
         res.redirect('/notAuthorizedAdmin');
     }
 }
-
-
-
-
 
 function userExists(req, res, next) {
     connection.query('SELECT * FROM users WHERE username=?', [req.body.uname], function (error, results, fields) {
@@ -158,11 +140,6 @@ function userExists(req, res, next) {
         }
     });
 }
-
-
-
-
-
 
 
 app.get('/', (req, res, next) => {
@@ -236,11 +213,12 @@ app.get('/userAlreadyExists', (req, res, next) => {
 
 
 
-
-
-app.get('/main', (req, res, next) => {
-    console.log(req.user);
-    res.render('main')
+app.get('/main', function (req, res) {
+    console.log(req.user.music_id)
+    connection.query('SELECT * FROM musicinfo WHERE music_id = ?', [req.user.music_id], function (err, result) {
+        if (err) throw err;
+        res.render('main', { music: result });
+    });
 });
 
 app.get('/profile', function (req, res) {
@@ -251,9 +229,8 @@ app.get('/profile', function (req, res) {
 });
 
 
-
 // app.post('/delete/:id', function (req, res, next) {
-//     var sql = 'DELETE FROM users WHERE user_id = ?';
+//     var sql = 'DELETE FROM musicinfo WHERE music_id = ?';
 //     var id = req.params.id;
 //     console.log(id)
 //     connection.query(sql, [id], function (err, result) {
@@ -262,8 +239,10 @@ app.get('/profile', function (req, res) {
 //       }
 //       console.log(result.affectedRows + ' row(s) updated');
 //     });
-//     res.redirect('/logout');
+//     res.redirect('/main');
 //   });
+
+
 
 app.get('/add', (req, res, next) => {
     console.log(req.user);
@@ -276,7 +255,6 @@ app.post('/add', (req, res, next) => {
     const year = req.body.year;
     const genre = req.body.genre;
 
-
     connection.query('Insert into musicinfo(songname, musician, year, genre) values(?,?,?,?) ', [songname, musician, year, genre], function (error, results, fields) {
         if (error) {
             console.log("Error");
@@ -287,8 +265,6 @@ app.post('/add', (req, res, next) => {
     });
     res.redirect('/main');
 });
-
-
 
 app.get('/subscription', function (req, res) {
     console.log('get works')
@@ -315,9 +291,7 @@ app.get('/payment/:type', function (req, res, next) {
     });
 })
 
-app.post('/payment/:type', (req, res, next) => {
-    var sql = 'SELECT * FROM subscriptions WHERE type = ?';
-    var type = req.params.type;
+app.post('/payment', (req, res, next) => {
     const email = req.body.email;
     const card = req.body.card;
     const cvv = req.body.cvv;
@@ -334,6 +308,57 @@ app.post('/payment/:type', (req, res, next) => {
 });
 
 
+app.get('/my', (req, res, next) => {
+    console.log(req.user);
+    res.render('my')
+});
+
+app.get("/users", isAuth, function (req, res) {
+    connection.query("SELECT * FROM users", function (err, data) {
+        if (err) return console.log(err);
+        res.render("users.hbs", {
+            users: data
+        });
+    });
+});
+
+app.get("/edit/:id", isAuth, function (req, res) {
+    const id = req.params.id;
+    console.log(id)
+    connection.query("SELECT * FROM users WHERE user_id=?", [id], function (err, data) {
+        if (err) return console.log(err);
+        res.render("edit.hbs", {
+            user: data[0]
+        });
+    });
+});
+// получаем отредактированные данные и отправляем их в БД
+app.post("/edit", isAuth, function (req, res) {
+
+    if (!req.body) return res.sendStatus(400);
+    const name = req.body.name;
+    const surname = req.body.surname;
+    const username = req.body.uname;
+    const email = req.body.email;
+    const birthday = req.body.birthday;
+    const country = req.body.country;
+    const user_id = req.body.user_id;
+
+    connection.query("UPDATE users SET name=?, surname=?, username=?, email=?, birthday=?, country=? WHERE user_id=?", [name, surname, username, email, birthday, country, user_id], function (err, data) {
+        if (err) return console.log(err);
+        res.redirect("/users");
+    });
+});
+
+// получаем id удаляемого пользователя и удаляем его из бд
+app.post("/delete/:id", function (req, res) {
+
+    const id = req.params.id;
+    connection.query("DELETE FROM users WHERE user_id=?", [id], function (err, data) {
+        if (err) return console.log(err);
+        res.redirect("/users");
+    });
+});
 
 
 
