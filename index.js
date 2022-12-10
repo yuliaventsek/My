@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const crypto = require('crypto');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
-const urlencodedParser = express.urlencoded({extended: false});
+const urlencodedParser = express.urlencoded({ extended: false });
 
 app.use(express.static('public'));
 
@@ -211,13 +211,11 @@ app.get('/userAlreadyExists', (req, res, next) => {
     res.send('<h1>Sorry this username is taken</h1><p><a href="/register">Register with different username</a></p>');
 });
 
-
-
 app.get('/main', function (req, res) {
-    console.log(req.user.music_id)
+    console.log(req.user)
     connection.query('SELECT * FROM musicinfo WHERE music_id = ?', [req.user.music_id], function (err, result) {
         if (err) throw err;
-        res.render('main', { music: result });
+        res.render('main', { isAdmin: req.user.isAdmin, music: result });
     });
 });
 
@@ -227,21 +225,6 @@ app.get('/profile', function (req, res) {
         res.render('profile', { data: result });
     });
 });
-
-
-// app.post('/delete/:id', function (req, res, next) {
-//     var sql = 'DELETE FROM musicinfo WHERE music_id = ?';
-//     var id = req.params.id;
-//     console.log(id)
-//     connection.query(sql, [id], function (err, result) {
-//       if (err) {
-//         throw err;
-//       }
-//       console.log(result.affectedRows + ' row(s) updated');
-//     });
-//     res.redirect('/main');
-//   });
-
 
 
 app.get('/add', (req, res, next) => {
@@ -291,18 +274,24 @@ app.get('/payment/:type', function (req, res, next) {
     });
 })
 
-app.post('/payment', (req, res, next) => {
+app.post('/payment', function (req, res) {
+    const type = req.body.type;
     const email = req.body.email;
     const card = req.body.card;
     const cvv = req.body.cvv;
-
-    connection.query('Insert into payment (email, card, cvv) values(?,?,?) ', [email, card, cvv], function (error, results, fields) {
+    console.log(type)
+    console.log(email)
+    console.log(card)
+    console.log(cvv)
+    console.log(req.user.user_id)
+    connection.query('Insert into payment (user_id, email, card, cvv, type) values(?,?,?,?,?)', [req.user.user_id, email, card, cvv, type], function (error, results, fields) {
         if (error) {
             console.log("Error");
         }
         else {
             console.log("Successfully");
         }
+        
     });
     res.redirect('/main');
 });
@@ -327,6 +316,7 @@ app.get("/edit/:id", isAuth, function (req, res) {
     console.log(id)
     connection.query("SELECT * FROM users WHERE user_id=?", [id], function (err, data) {
         if (err) return console.log(err);
+        console.log(data[0])
         res.render("edit.hbs", {
             user: data[0]
         });
@@ -336,15 +326,18 @@ app.get("/edit/:id", isAuth, function (req, res) {
 app.post("/edit", isAuth, function (req, res) {
 
     if (!req.body) return res.sendStatus(400);
+
+    const id = req.body.id;
+    console.log(id);
     const name = req.body.name;
     const surname = req.body.surname;
     const username = req.body.uname;
     const email = req.body.email;
     const birthday = req.body.birthday;
     const country = req.body.country;
-    const user_id = req.body.user_id;
 
-    connection.query("UPDATE users SET name=?, surname=?, username=?, email=?, birthday=?, country=? WHERE user_id=?", [name, surname, username, email, birthday, country, user_id], function (err, data) {
+    console.log('hi');
+    connection.query("UPDATE users SET name=?, surname=?, username=?, email=?, birthday=?, country=? WHERE user_id=?", [name, surname, username, email, birthday, country, id], function (err, data) {
         if (err) return console.log(err);
         res.redirect("/users");
     });
@@ -359,10 +352,6 @@ app.post("/delete/:id", function (req, res) {
         res.redirect("/users");
     });
 });
-
-
-
-
 
 app.listen(3306, function () {
     console.log('App listening on port 8080!')

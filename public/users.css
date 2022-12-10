@@ -112,5 +112,6 @@ input{
    background-color: #a29bfe;
    border-radius: 15px;
    width: 60px;
+   cursor: pointer;
 }
 

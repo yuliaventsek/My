@@ -161,19 +161,24 @@
                 <p>$ <%= info.cost %>
                 </p>
             </div>
+            
+            <form action="/payment" method='POST' class="payment">
+                <div>
+                    <input type="hidden" name="type" value="<%= info.type %>">
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="Email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <input type="number" placeholder="Number card" min="1000000000000000" max="9999999999999999"
+                        name="card" required>
+                </div>
+                <div class="input-group">
+                    <input type="number" placeholder="CVV" max="999" min="100" name="cvv" required>
+                </div>
+                <input class="button color" type="submit" value="Pay" />
+            </form>
             <%})%>
-                <form method='POST' class="payment">
-                    <div class="input-group">
-                        <input type="email" placeholder="Email" name="email" required>
-                    </div>
-                    <div class="input-group">
-                        <input type="number" placeholder="Number card" min="1000000000000000" max="9999999999999999" name="card" required>
-                    </div>
-                    <div class="input-group">
-                        <input type="number" placeholder="CVV" max="999" min="100" name="cvv" required>
-                    </div>
-                    <input class="button color" formaction="/main" type="submit" value="Pay" />
-                </form>
     </div>
 </body>
 
